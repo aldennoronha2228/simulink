@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Search } from 'lucide-react';
 import { AVAILABLE_COMPONENTS } from '@/store/useCircuitStore';
 
 // Tiny preview scale for sidebar thumbnails
@@ -30,6 +31,12 @@ const SIDEBAR_SCALES: Record<string, number> = {
 };
 
 export default function Sidebar() {
+  const [query, setQuery] = useState('');
+
+  const filtered = AVAILABLE_COMPONENTS.filter(c =>
+    c.label.toLowerCase().includes(query.toLowerCase())
+  );
+
   const handleDragStart = (e: React.DragEvent, type: string) => {
     e.dataTransfer.setData('componentType', type);
     e.dataTransfer.effectAllowed = 'copy';
@@ -41,7 +48,23 @@ export default function Sidebar() {
         Components
       </p>
 
-      {AVAILABLE_COMPONENTS.map((comp) => {
+      {/* Search bar */}
+      <div className="relative mb-1">
+        <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+        <input
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Search…"
+          className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-7 pr-3 py-1.5 text-xs text-gray-200 placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
+        />
+      </div>
+
+      {filtered.length === 0 && (
+        <p className="text-gray-600 text-xs text-center py-4">No components found</p>
+      )}
+
+      {filtered.map((comp) => {
         const TagName = comp.type as any;
         const scale = SIDEBAR_SCALES[comp.type] ?? 0.18;
 
