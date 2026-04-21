@@ -2,7 +2,32 @@ import { create } from 'zustand';
 
 export type Position = { x: number; y: number };
 
-export type ComponentType = 'ArduinoUno' | 'Breadboard' | 'LED' | 'Resistor' | 'Button';
+export type ComponentType = string;
+
+export const AVAILABLE_COMPONENTS = [
+  { type: 'wokwi-arduino-uno', label: 'Arduino Uno' },
+  { type: 'wokwi-arduino-nano', label: 'Arduino Nano' },
+  { type: 'wokwi-arduino-mega', label: 'Arduino Mega' },
+  { type: 'wokwi-esp32-devkit-v1', label: 'ESP32 DevKit' },
+  { type: 'wokwi-led', label: 'LED' },
+  { type: 'wokwi-rgb-led', label: 'RGB LED' },
+  { type: 'wokwi-resistor', label: 'Resistor' },
+  { type: 'wokwi-pushbutton', label: 'Button' },
+  { type: 'wokwi-potentiometer', label: 'Potentiometer' },
+  { type: 'wokwi-slide-potentiometer', label: 'Slide Pot' },
+  { type: 'wokwi-slide-switch', label: 'Slide Switch' },
+  { type: 'wokwi-photoresistor-sensor', label: 'Photoresistor' },
+  { type: 'wokwi-pir-motion-sensor', label: 'PIR Sensor' },
+  { type: 'wokwi-hc-sr04', label: 'Ultrasonic' },
+  { type: 'wokwi-dht22', label: 'DHT22' },
+  { type: 'wokwi-servo', label: 'Servo' },
+  { type: 'wokwi-stepper-motor', label: 'Stepper' },
+  { type: 'wokwi-membrane-keypad', label: 'Membrane Keypad' },
+  { type: 'wokwi-buzzer', label: 'Buzzer' },
+  { type: 'wokwi-lcd1602', label: 'LCD 16x2' },
+  { type: 'wokwi-ssd1306', label: 'OLED SSD1306' },
+  { type: 'wokwi-neopixel-matrix', label: 'NeoPixel Matrix' }
+];
 
 export interface Wire {
   id: string;

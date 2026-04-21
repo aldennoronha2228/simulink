@@ -33,39 +33,38 @@ export default function ComponentCard({ component }: ComponentCardProps) {
   };
 
   const VisualNode = () => {
-    switch (component.type) {
-      case 'ArduinoUno':
-        return <wokwi-arduino-uno style={{ transform: 'scale(0.8)', transformOrigin: 'top left' }}></wokwi-arduino-uno>;
-      case 'Breadboard':
-        return (
-          <div className="w-80 h-32 bg-gray-200 rounded-md shadow-xl flex items-center justify-center p-2">
-            <div className="w-full h-full border border-gray-300 rounded flex flex-col gap-1 p-2">
-               <div className="flex gap-1 border-b pb-1 border-red-300">
-                 {Array.from({length: 30}).map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-400" />)}
-               </div>
-               <div className="flex gap-1 border-b pb-1 border-blue-300 mb-2">
-                 {Array.from({length: 30}).map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-400" />)}
-               </div>
-               <div className="flex-1 flex flex-col justify-center gap-1 opacity-60">
-                 <div className="flex gap-1">
-                   {Array.from({length: 30}).map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-400" />)}
-                 </div>
-                 <div className="flex gap-1">
-                   {Array.from({length: 30}).map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-400" />)}
-                 </div>
-               </div>
-            </div>
-          </div>
-        );
-      case 'LED':
-        return <wokwi-led color="red"></wokwi-led>;
-      case 'Resistor':
-        return <wokwi-resistor value="1000"></wokwi-resistor>;
-      case 'Button':
-        return <wokwi-pushbutton></wokwi-pushbutton>;
-      default:
-        return <div className="p-4 bg-purple-600 rounded">{component.type}</div>;
+    const TagName = component.type as any;
+    
+    // Auto-scale tiny components so they are usable on our Canvas
+    let scale = 1;
+    if (component.type.includes('arduino') || component.type.includes('esp32') || component.type.includes('membrane')) {
+      scale = 0.8;
+    } else if (
+      component.type.includes('led') ||
+      component.type.includes('resistor') ||
+      component.type.includes('button') ||
+      component.type.includes('switch') ||
+      component.type.includes('potentiometer') ||
+      component.type.includes('buzzer') ||
+      component.type.includes('dht') ||
+      component.type.includes('sensor') ||
+      component.type.includes('hc-sr04')
+    ) {
+      scale = 3; // Make these smaller components 3x bigger
+    } else {
+      scale = 1.5; // Default for lcd, etc.
     }
+
+    return (
+      <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left', display: 'flex' }}>
+        {/* Pass some default properties so they don't look completely uninitialized if required */}
+        <TagName 
+          color="red" 
+          value="1000" 
+          pins="16"
+        />
+      </div>
+    );
   };
 
   return (
