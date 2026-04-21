@@ -1,63 +1,56 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-nocheck
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { CircuitComponent, useCircuitStore } from '@/store/useCircuitStore';
 
 interface ComponentCardProps {
   component: CircuitComponent;
 }
 
-// Medium sizes for canvas-placed components
-const CANVAS_SCALES: { [key: string]: number } = {
-  'wokwi-arduino-uno': 0.55,
-  'wokwi-arduino-nano': 0.65,
-  'wokwi-arduino-mega': 0.4,
-  'wokwi-esp32-devkit-v1': 0.8,
-  'wokwi-led': 2.2,
-  'wokwi-rgb-led': 2.0,
-  'wokwi-resistor': 1.6,
-  'wokwi-pushbutton': 1.8,
-  'wokwi-potentiometer': 1.1,
-  'wokwi-slide-potentiometer': 0.9,
-  'wokwi-slide-switch': 1.8,
-  'wokwi-photoresistor-sensor': 0.9,
-  'wokwi-pir-motion-sensor': 0.9,
-  'wokwi-hc-sr04': 0.9,
-  'wokwi-dht22': 1.0,
-  'wokwi-servo': 0.85,
-  'wokwi-stepper-motor': 0.65,
-  'wokwi-membrane-keypad': 0.55,
-  'wokwi-buzzer': 1.4,
-  'wokwi-lcd1602': 0.65,
-  'wokwi-ssd1306': 0.9,
-  'wokwi-neopixel-matrix': 0.75,
+// How large each component appears when placed on canvas
+const CANVAS_SCALES: Record<string, number> = {
+  'wokwi-arduino-uno':         0.55,
+  'wokwi-arduino-nano':        0.65,
+  'wokwi-arduino-mega':        0.40,
+  'wokwi-esp32-devkit-v1':     0.75,
+  'wokwi-led':                 2.40,
+  'wokwi-rgb-led':             2.00,
+  'wokwi-resistor':            1.80,
+  'wokwi-pushbutton':          1.60,
+  'wokwi-potentiometer':       1.10,
+  'wokwi-slide-potentiometer': 0.90,
+  'wokwi-slide-switch':        1.80,
+  'wokwi-photoresistor-sensor':0.90,
+  'wokwi-pir-motion-sensor':   0.90,
+  'wokwi-hc-sr04':             0.90,
+  'wokwi-dht22':               1.00,
+  'wokwi-servo':               0.85,
+  'wokwi-stepper-motor':       0.65,
+  'wokwi-membrane-keypad':     0.55,
+  'wokwi-buzzer':              1.40,
+  'wokwi-lcd1602':             0.65,
+  'wokwi-ssd1306':             0.90,
+  'wokwi-neopixel-matrix':     0.75,
 };
 
 export default function ComponentCard({ component }: ComponentCardProps) {
   const { selectedComponentId, selectComponent, updateComponentPosition } = useCircuitStore();
   const cardRef = useRef<HTMLDivElement>(null);
-  const [loaded, setLoaded] = useState(false);
 
   const isSelected = selectedComponentId === component.id;
-
-  useEffect(() => {
-    import('@wokwi/elements')
-      .then(() => setLoaded(true))
-      .catch(console.error);
-  }, []);
+  const scale = CANVAS_SCALES[component.type] ?? 0.70;
+  const TagName = component.type;
 
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData('existingComponentId', component.id);
     const rect = cardRef.current?.getBoundingClientRect();
     if (rect) {
-      e.dataTransfer.setData('offsetX', (e.clientX - rect.left).toString());
-      e.dataTransfer.setData('offsetY', (e.clientY - rect.top).toString());
+      e.dataTransfer.setData('offsetX', String(e.clientX - rect.left));
+      e.dataTransfer.setData('offsetY', String(e.clientY - rect.top));
     }
   };
-
-  const scale = CANVAS_SCALES[component.type] ?? 0.7;
-  const TagName = component.type;
 
   return (
     <div
@@ -68,29 +61,31 @@ export default function ComponentCard({ component }: ComponentCardProps) {
         e.stopPropagation();
         selectComponent(component.id);
       }}
-      className={`absolute cursor-move transition-transform active:scale-95 ${
+      className={`absolute cursor-move select-none ${
         isSelected
-          ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-gray-900 rounded-lg z-50'
-          : 'hover:ring-1 ring-blue-400/50 z-10'
+          ? 'ring-2 ring-blue-400 ring-offset-2 ring-offset-gray-950 rounded-xl z-50'
+          : 'hover:ring-1 ring-blue-400/40 rounded-xl z-10'
       }`}
       style={{ left: component.position.x, top: component.position.y }}
     >
-      {loaded ? (
-        <div
-          style={{
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-            display: 'inline-flex',
-          }}
-        >
-          <TagName color="red" value="1000" />
-        </div>
-      ) : (
-        // Skeleton placeholder while loading
-        <div className="w-16 h-16 bg-gray-700 rounded-lg animate-pulse flex items-center justify-center">
-          <span className="text-gray-500 text-xs">{component.type.replace('wokwi-', '')}</span>
+      {/* Label above component */}
+      {isSelected && (
+        <div className="absolute -top-6 left-0 text-[11px] text-blue-300 font-medium bg-gray-900/90 px-2 py-0.5 rounded whitespace-nowrap">
+          {component.name}
         </div>
       )}
+
+      {/* The actual Wokwi web component, scaled to medium size */}
+      <div
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+          display: 'inline-flex',
+          lineHeight: 0,
+        }}
+      >
+        <TagName color="red" value="1000" />
+      </div>
     </div>
   );
 }
