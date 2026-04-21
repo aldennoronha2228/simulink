@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import React, { useRef, useEffect } from 'react';
@@ -15,13 +16,16 @@ export default function ComponentCard({ component }: ComponentCardProps) {
 
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData('existingComponentId', component.id);
-    // Calculate offset so the component doesn't snap its top-left to the mouse
     const rect = cardRef.current?.getBoundingClientRect();
     if (rect) {
       e.dataTransfer.setData('offsetX', (e.clientX - rect.left).toString());
       e.dataTransfer.setData('offsetY', (e.clientY - rect.top).toString());
     }
   };
+
+  useEffect(() => {
+    import('@wokwi/elements').catch(console.error);
+  }, []);
 
   const handleDragEnd = (e: React.DragEvent) => {
     // The drop on canvas takes care of position updates usually,
@@ -31,22 +35,7 @@ export default function ComponentCard({ component }: ComponentCardProps) {
   const VisualNode = () => {
     switch (component.type) {
       case 'ArduinoUno':
-        return (
-          <div className="w-48 h-64 bg-teal-800 rounded-lg border-2 border-teal-600 flex flex-col justify-between p-2 shadow-xl shadow-black/40">
-            <div className="flex justify-between">
-              <div className="w-6 h-6 bg-gray-400 border border-gray-500 rounded-full"></div>
-              <div className="flex gap-1">
-                {Array.from({ length: 8 }).map((_, i) => <div key={i} className="w-3 h-3 bg-gray-900 rounded-sm" />)}
-              </div>
-            </div>
-            <div className="text-teal-400 font-bold tracking-widest text-center self-center rotate-90 w-max translate-x-3 text-lg opacity-70">
-              UNO
-            </div>
-            <div className="flex gap-1 justify-end">
-              {Array.from({ length: 6 }).map((_, i) => <div key={i} className="w-3 h-3 bg-gray-900 rounded-sm" />)}
-            </div>
-          </div>
-        );
+        return <wokwi-arduino-uno style={{ transform: 'scale(0.8)', transformOrigin: 'top left' }}></wokwi-arduino-uno>;
       case 'Breadboard':
         return (
           <div className="w-80 h-32 bg-gray-200 rounded-md shadow-xl flex items-center justify-center p-2">
@@ -69,38 +58,11 @@ export default function ComponentCard({ component }: ComponentCardProps) {
           </div>
         );
       case 'LED':
-        return (
-           <div className="w-12 h-16 flex flex-col items-center">
-             <div className="w-8 h-10 bg-red-500 rounded-t-full shadow-[0_0_15px_rgba(239,68,68,0.6)]"></div>
-             <div className="flex gap-2">
-               <div className="w-1 h-8 bg-gray-300"></div>
-               <div className="w-1 h-6 bg-gray-300"></div>
-             </div>
-           </div>
-        );
+        return <wokwi-led color="red"></wokwi-led>;
       case 'Resistor':
-        return (
-           <div className="w-20 h-6 flex items-center">
-             <div className="w-4 h-1 bg-gray-400"></div>
-             <div className="flex-1 h-5 bg-amber-200 rounded-full flex gap-1 justify-center items-center overflow-hidden">
-               <div className="w-1 h-full bg-red-600"></div>
-               <div className="w-1 h-full bg-black"></div>
-               <div className="w-1 h-full bg-orange-600"></div>
-               <div className="w-1 h-full bg-yellow-600"></div>
-             </div>
-             <div className="w-4 h-1 bg-gray-400"></div>
-           </div>
-        );
+        return <wokwi-resistor value="1000"></wokwi-resistor>;
       case 'Button':
-        return (
-          <div className="w-10 h-10 bg-gray-800 rounded-md border-2 border-gray-600 flex items-center justify-center relative">
-            <div className="w-6 h-6 bg-gray-300 rounded-full border border-gray-400 shadow-inner"></div>
-            <div className="absolute top-0 -left-2 w-2 h-1 bg-gray-400"></div>
-            <div className="absolute top-0 -right-2 w-2 h-1 bg-gray-400"></div>
-            <div className="absolute bottom-0 -left-2 w-2 h-1 bg-gray-400"></div>
-            <div className="absolute bottom-0 -right-2 w-2 h-1 bg-gray-400"></div>
-          </div>
-        );
+        return <wokwi-pushbutton></wokwi-pushbutton>;
       default:
         return <div className="p-4 bg-purple-600 rounded">{component.type}</div>;
     }

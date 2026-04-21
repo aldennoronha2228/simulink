@@ -1,0 +1,326 @@
+[
+  {
+    "id": "7segment",
+    "name": "7segment",
+    "category": "displays",
+    "image": "/assets/displays/7segment.svg"
+  },
+  {
+    "id": "analog-joystick",
+    "name": "Analog Joystick",
+    "category": "other",
+    "image": "/assets/other/analog-joystick.svg"
+  },
+  {
+    "id": "arduino-mega",
+    "name": "Arduino Mega",
+    "category": "microcontrollers",
+    "image": "/assets/microcontrollers/arduino-mega.svg"
+  },
+  {
+    "id": "arduino-nano",
+    "name": "Arduino Nano",
+    "category": "microcontrollers",
+    "image": "/assets/microcontrollers/arduino-nano.svg"
+  },
+  {
+    "id": "arduino-uno",
+    "name": "Arduino Uno",
+    "category": "microcontrollers",
+    "image": "/assets/microcontrollers/arduino-uno.svg"
+  },
+  {
+    "id": "biaxial-stepper",
+    "name": "Biaxial Stepper",
+    "category": "other",
+    "image": "/assets/other/biaxial-stepper.svg"
+  },
+  {
+    "id": "big-sound-sensor",
+    "name": "Big Sound Sensor",
+    "category": "other",
+    "image": "/assets/other/big-sound-sensor.svg"
+  },
+  {
+    "id": "buzzer",
+    "name": "Buzzer",
+    "category": "actuators",
+    "image": "/assets/actuators/buzzer.svg"
+  },
+  {
+    "id": "dht22",
+    "name": "Dht22",
+    "category": "sensors",
+    "image": "/assets/sensors/dht22.svg"
+  },
+  {
+    "id": "dip-switch-8",
+    "name": "Dip Switch 8",
+    "category": "basic",
+    "image": "/assets/basic/dip-switch-8.svg"
+  },
+  {
+    "id": "ds1307",
+    "name": "Ds1307",
+    "category": "other",
+    "image": "/assets/other/ds1307.svg"
+  },
+  {
+    "id": "esp32-devkit-v1",
+    "name": "Esp32 Devkit V1",
+    "category": "microcontrollers",
+    "image": "/assets/microcontrollers/esp32-devkit-v1.svg"
+  },
+  {
+    "id": "flame-sensor",
+    "name": "Flame Sensor",
+    "category": "other",
+    "image": "/assets/other/flame-sensor.svg"
+  },
+  {
+    "id": "franzininho",
+    "name": "Franzininho",
+    "category": "other",
+    "image": "/assets/other/franzininho.svg"
+  },
+  {
+    "id": "gas-sensor",
+    "name": "Gas Sensor",
+    "category": "sensors",
+    "image": "/assets/sensors/gas-sensor.svg"
+  },
+  {
+    "id": "hc-sr04",
+    "name": "Hc Sr04",
+    "category": "sensors",
+    "image": "/assets/sensors/hc-sr04.svg"
+  },
+  {
+    "id": "heart-beat-sensor",
+    "name": "Heart Beat Sensor",
+    "category": "other",
+    "image": "/assets/other/heart-beat-sensor.svg"
+  },
+  {
+    "id": "hx711",
+    "name": "Hx711",
+    "category": "other",
+    "image": "/assets/other/hx711.svg"
+  },
+  {
+    "id": "ili9341",
+    "name": "Ili9341",
+    "category": "displays",
+    "image": "/assets/displays/ili9341.svg"
+  },
+  {
+    "id": "ir-receiver",
+    "name": "Ir Receiver",
+    "category": "other",
+    "image": "/assets/other/ir-receiver.svg"
+  },
+  {
+    "id": "ir-remote",
+    "name": "Ir Remote",
+    "category": "other",
+    "image": "/assets/other/ir-remote.svg"
+  },
+  {
+    "id": "ks2e-m-dc5",
+    "name": "Ks2e M Dc5",
+    "category": "other",
+    "image": "/assets/other/ks2e-m-dc5.svg"
+  },
+  {
+    "id": "ky-040",
+    "name": "Ky 040",
+    "category": "other",
+    "image": "/assets/other/ky-040.svg"
+  },
+  {
+    "id": "lcd1602",
+    "name": "Lcd1602",
+    "category": "displays",
+    "image": "/assets/displays/lcd1602.svg"
+  },
+  {
+    "id": "led-bar-graph",
+    "name": "Led Bar Graph",
+    "category": "displays",
+    "image": "/assets/displays/led-bar-graph.svg"
+  },
+  {
+    "id": "led",
+    "name": "Led",
+    "category": "basic",
+    "image": "/assets/basic/led.svg"
+  },
+  {
+    "id": "led-ring",
+    "name": "Led Ring",
+    "category": "basic",
+    "image": "/assets/basic/led-ring.svg"
+  },
+  {
+    "id": "membrane-keypad",
+    "name": "Membrane Keypad",
+    "category": "other",
+    "image": "/assets/other/membrane-keypad.svg"
+  },
+  {
+    "id": "microsd-card",
+    "name": "Microsd Card",
+    "category": "other",
+    "image": "/assets/other/microsd-card.svg"
+  },
+  {
+    "id": "mpu6050",
+    "name": "Mpu6050",
+    "category": "other",
+    "image": "/assets/other/mpu6050.svg"
+  },
+  {
+    "id": "nano-rp2040-connect",
+    "name": "Nano Rp2040 Connect",
+    "category": "microcontrollers",
+    "image": "/assets/microcontrollers/nano-rp2040-connect.svg"
+  },
+  {
+    "id": "neopixel",
+    "name": "Neopixel",
+    "category": "other",
+    "image": "/assets/other/neopixel.svg"
+  },
+  {
+    "id": "neopixel-matrix",
+    "name": "Neopixel Matrix",
+    "category": "displays",
+    "image": "/assets/displays/neopixel-matrix.svg"
+  },
+  {
+    "id": "ntc-temperature-sensor",
+    "name": "Ntc Temperature Sensor",
+    "category": "sensors",
+    "image": "/assets/sensors/ntc-temperature-sensor.svg"
+  },
+  {
+    "id": "photoresistor-sensor",
+    "name": "Photoresistor Sensor",
+    "category": "basic",
+    "image": "/assets/basic/photoresistor-sensor.svg"
+  },
+  {
+    "id": "pir-motion-sensor",
+    "name": "Pir Motion Sensor",
+    "category": "sensors",
+    "image": "/assets/sensors/pir-motion-sensor.svg"
+  },
+  {
+    "id": "potentiometer",
+    "name": "Potentiometer",
+    "category": "basic",
+    "image": "/assets/basic/potentiometer.svg"
+  },
+  {
+    "id": "pushbutton-6mm",
+    "name": "Pushbutton 6mm",
+    "category": "basic",
+    "image": "/assets/basic/pushbutton-6mm.svg"
+  },
+  {
+    "id": "pushbutton",
+    "name": "Pushbutton",
+    "category": "basic",
+    "image": "/assets/basic/pushbutton.svg"
+  },
+  {
+    "id": "resistor",
+    "name": "Resistor",
+    "category": "basic",
+    "image": "/assets/basic/resistor.svg"
+  },
+  {
+    "id": "rgb-led",
+    "name": "Rgb Led",
+    "category": "basic",
+    "image": "/assets/basic/rgb-led.svg"
+  },
+  {
+    "id": "rotary-dialer",
+    "name": "Rotary Dialer",
+    "category": "other",
+    "image": "/assets/other/rotary-dialer.svg"
+  },
+  {
+    "id": "servo",
+    "name": "Servo",
+    "category": "actuators",
+    "image": "/assets/actuators/servo.svg"
+  },
+  {
+    "id": "slide-potentiometer",
+    "name": "Slide Potentiometer",
+    "category": "basic",
+    "image": "/assets/basic/slide-potentiometer.svg"
+  },
+  {
+    "id": "slide-switch",
+    "name": "Slide Switch",
+    "category": "basic",
+    "image": "/assets/basic/slide-switch.svg"
+  },
+  {
+    "id": "small-sound-sensor",
+    "name": "Small Sound Sensor",
+    "category": "other",
+    "image": "/assets/other/small-sound-sensor.svg"
+  },
+  {
+    "id": "ssd1306",
+    "name": "Ssd1306",
+    "category": "displays",
+    "image": "/assets/displays/ssd1306.svg"
+  },
+  {
+    "id": "stepper-motor",
+    "name": "Stepper Motor",
+    "category": "actuators",
+    "image": "/assets/actuators/stepper-motor.svg"
+  },
+  {
+    "id": "tilt-switch",
+    "name": "Tilt Switch",
+    "category": "other",
+    "image": "/assets/other/tilt-switch.svg"
+  },
+  {
+    "id": "Breadboard",
+    "name": "Breadboard",
+    "category": "basic",
+    "image": ""
+  },
+  {
+    "id": "ArduinoUno",
+    "name": "Arduino Uno (Custom)",
+    "category": "microcontrollers",
+    "image": ""
+  },
+  {
+    "id": "LED",
+    "name": "LED (Custom)",
+    "category": "basic",
+    "image": ""
+  },
+  {
+    "id": "Resistor",
+    "name": "Resistor (Custom)",
+    "category": "basic",
+    "image": ""
+  },
+  {
+    "id": "Button",
+    "name": "Button (Custom)",
+    "category": "basic",
+    "image": ""
+  }
+]

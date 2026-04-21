@@ -1,0 +1,123 @@
+<svg
+        width="mm"
+        height="mm"
+        version="1.1"
+        viewBox="0 0  "
+        font-family="sans-serif"
+        font-size="8.2px"
+        text-anchor="middle"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        
+        
+      >
+<style>
+
+      text {
+        fill: #dfe2e5;
+        user-select: none;
+      }
+
+      g[tabindex] {
+        cursor: pointer;
+      }
+
+      g[tabindex]:focus,
+      g[tabindex]:active {
+        stroke: white;
+        outline: none;
+      }
+
+      .blue-key:focus,
+      .red-key:focus {
+        filter: url(#shadow);
+      }
+
+      .blue-key:active,
+      .blue-key.pressed {
+        fill: #4e50d7;
+      }
+
+      .red-key:active,
+      .red-key.pressed {
+        fill: #ab040b;
+      }
+
+      g[tabindex]:focus text {
+        stroke: none;
+      }
+
+      g[tabindex]:active text,
+      .blue-key.pressed text,
+      .red-key.pressed text {
+        fill: white;
+        stroke: none;
+      }
+    
+</style>
+
+        <defs>
+          <pattern id="wires" width="2.54" height="8" patternUnits="userSpaceOnUse">
+            <rect width="2.54" height="8" fill="#eee" />
+            <rect x="0.77" width="1" height="6" fill="#d9d5bc" />
+            <circle cx="1.27" cy="6" r="0.75" fill="#d9d5bc" />
+            <rect x="0.52" y="6" width="1.5" height="2" fill="#d9d5bc" />
+          </pattern>
+          <pattern id="wires-marks" width="2.54" height="8" patternUnits="userSpaceOnUse">
+            <rect x="0.52" y="6" width="1.5" height="2" fill="#746d41" />
+          </pattern>
+          
+          <filter id="shadow">
+            <feDropShadow dx="0" dy="0" stdDeviation="0.5" flood-color="#ffff99" />
+          </filter>
+        </defs>
+
+        <!-- Keypad outline -->
+        <rect x="0" y="0" width="" height="76" rx="5" ry="5" fill="#454449" />
+        <rect
+          x="2.78"
+          y="3.25"
+          width=""
+          height="68.6"
+          rx="3.5"
+          ry="3.5"
+          fill="none"
+          stroke="#b1b5b9"
+          stroke-width="1"
+        />
+
+        <!-- Connector -->
+        , 76)">
+              <rect width="" height="8" fill="url(#wires)" />
+              <rect width="10.16" height="8" fill="url(#wires-marks)" />
+              <rect y="8" width="" height="7" fill="#333" />
+              <rect transform="translate(0, 12)" width="" height="2.54" fill="url(#pins-female)" />
+            </g>
+          `
+          : null}
+
+        <!-- Blue keys -->
+        <g fill="#4e90d7">
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+        </g>
+
+        <!-- Red keys -->
+        <g fill="#e94541">
+          <g></g>
+          <g></g>
+          </g>
+              <g></g>
+              <g></g>
+              <g></g>
+          `}
+        </g>
+      </svg>

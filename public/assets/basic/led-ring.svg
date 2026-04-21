@@ -1,0 +1,28 @@
+<svg
+        width="mm"
+        height="mm"
+        version="1.1"
+        viewBox="0 0  "
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern id="pin-pattern" height="2" width="2.54" patternUnits="userSpaceOnUse">
+            <rect x="1.02" y="0" height="2" width="0.5" fill="#aaa" />
+          </pattern>
+        </defs>
+        <rect
+          fill="url(#pin-pattern)"
+          height=""
+          width=
+          transform="translate(, )"
+        />
+        <circle
+          cx=""
+          cy=""
+          r=""
+          fill="transparent"
+          stroke-width=""
+          stroke=""
+        />
+        
+      </svg>

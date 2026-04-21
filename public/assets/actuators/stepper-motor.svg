@@ -1,0 +1,168 @@
+<svg
+      width="mm"
+      height="mm"
+      version="1.1"
+      viewBox="0 0  "
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
+      <defs>
+        <linearGradient
+          id="frame-gradient"
+          x1="-"
+          x2=""
+          y1=""
+          y2=""
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#666" offset="0" />
+          <stop stop-color="#fff" offset="1" />
+        </linearGradient>
+        <linearGradient
+          id="shaft-gradient"
+          x1="0"
+          x2="0"
+          y1="-5"
+          y2="5"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#9d9d9d" offset="0" />
+          <stop stop-color="#9d9d9d" stop-opacity="0" offset="1" />
+        </linearGradient>
+        <linearGradient
+          id="body-gradient"
+          x1=""
+          x2=""
+          y1=""
+          y2=""
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#9d9d9d" offset="0" />
+          <stop stop-color="#fdfafa" offset=".29501" />
+          <stop offset="1" stop-color="#2a2a2a" />
+        </linearGradient>
+      </defs>
+      <!-- Body -->
+      <g transform="translate(1,1)">
+        <g transform="scale()">
+          <!-- Pins -->
+          <path
+            id="pin"
+            transform="translate( )"
+            fill="#9f9f9f"
+            d="m 0 0 c .5 0 .5 0 .5 .5 v 4.55 c -.5 .5 -.5 .5 -1 0 v -4.5 c 0 -.5 0 -.5 .5 -.5"
+          />
+          <use xlink:href="#pin" x="2.54" />
+          <use xlink:href="#pin" x="5.08" />
+          <use xlink:href="#pin" x="7.62" />
+
+          <g stroke-linecap="round" stroke-linejoin="round">
+            <rect
+              width=""
+              height=""
+              rx=""
+              ry=""
+              fill="url(#frame-gradient)"
+              stroke="#000"
+              stroke-width=".3245"
+            />
+            <circle cx="" cy="" r="" fill="#666" />
+            <circle
+              cx=""
+              cy=""
+              r=""
+              fill="#e6e6e6"
+            />
+            <circle
+              cx=""
+              cy=""
+              r=""
+              fill="#666"
+            />
+            <circle
+              cx=""
+              cy=""
+              r=""
+              fill="#e6e6e6"
+            />
+            <circle
+              cx=""
+              cy=""
+              r=""
+              fill="#666"
+            />
+            <circle
+              cx=""
+              cy=""
+              r=""
+              fill="#e6e6e6"
+            />
+            <circle
+              cx=""
+              cy=""
+              r=""
+              fill="#666"
+            />
+            <circle
+              cx=""
+              cy=""
+              r=""
+              fill="#e6e6e6"
+            />
+          </g>
+
+          <!-- motor body -->
+          <circle
+            cx=""
+            cy=""
+            r=""
+            fill="#868686"
+            fill-opacity=".89602"
+            opacity=".73"
+            stroke="url(#body-gradient)"
+            stroke-width="1.41429"
+          />
+          <!-- Rotator -->
+          <g>
+            <path
+              id="arrow-path"
+              transform="
+                rotate(, ,) 
+                translate( )"
+              fill=""
+              d="m 0 0 l - 0 l  
+                - l   z"
+            />
+            <path
+              id="shaft-path"
+              transform="
+                translate(, ) 
+                rotate() 
+                translate(0, 0)"
+              d="m - - a   0 1 0  0 z"
+              fill="#4d4d4d"
+              stroke="url(#shaft-gradient)"
+              stroke-width=".57968"
+            />
+          </g>
+
+          <!-- Text -->
+          <text font-family="arial" font-size="14.667px" text-align="center" text-anchor="middle">
+            <tspan
+              x=""
+              y=""
+              font-size="px"
+            >
+              
+            </tspan>
+            <tspan
+              x=""
+              y=""
+              font-size="px"
+            >
+              
+            </tspan>
+          </text>
+        </g>
+      </g>
+    </svg>

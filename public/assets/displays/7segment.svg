@@ -1,0 +1,27 @@
+<svg
+        width="mm"
+        height="mm"
+        version="1.1"
+        viewBox="0 0  "
+        xmlns="http://www.w3.org/2000/svg"
+      >
+<style>
+
+      polygon {
+        transform: scale(0.9);
+        transform-origin: 50% 50%;
+        transform-box: fill-box;
+      }
+    
+</style>
+
+        <defs>
+          <pattern id="pin-pattern" height="2" width="2.54" patternUnits="userSpaceOnUse">
+            
+          </pattern>
+        </defs>
+        <rect x="0" y="" width="" height="20.5" />
+        <!-- -->
+        <!-- -->
+        
+      </svg>

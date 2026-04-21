@@ -1,0 +1,16 @@
+<svg
+        width="10.1mm"
+        height="25.5mm"
+        version="1.1"
+        viewBox="0 0 10.1 25.5"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <pattern id="pin-pattern" height="2.54" width="10.1" patternUnits="userSpaceOnUse">
+          <circle cx="1.27" cy="1.27" r="0.5" fill="#aaa" />
+          <circle cx="8.83" cy="1.27" r="0.5" fill="#aaa" />
+        </pattern>
+        <path d="m1.4 0h8.75v25.5h-10.1v-24.2z" />
+        <rect width="10.1" height="25.4" fill="url(#pin-pattern)" />
+        " width="5" height="1.74" fill=""/>`,
+        )}
+      </svg>
