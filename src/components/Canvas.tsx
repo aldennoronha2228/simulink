@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useCircuitStore, ComponentType } from '@/store/useCircuitStore';
 import ComponentCard from './ComponentCard';
-import { MousePointer2, Pencil, ZoomIn, ZoomOut } from 'lucide-react';
+import { MousePointer2, Cable, ZoomIn, ZoomOut, X } from 'lucide-react';
 
 export default function Canvas() {
   const {
@@ -12,70 +12,61 @@ export default function Canvas() {
     addComponent,
     updateComponentPosition,
     selectComponent,
-    drawingWireStart,
-    setDrawingWireStart,
-    addWire,
+    wireInProgress,
+    cancelWire,
   } = useCircuitStore();
 
   const canvasRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-  const [pan] = useState({ x: 0, y: 0 });
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [wireMode, setWireMode] = useState(false);
+  const [zoom, setZoom]       = useState(1);
+  const [pan]                 = useState({ x: 0, y: 0 });
+  const [mouseCanvas, setMouseCanvas] = useState({ x: 0, y: 0 });
+  const [wireModeActive, setWireModeActive] = useState(false);
 
+  // Cancel wire on Escape
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setDrawingWireStart(null);
-        setWireMode(false);
-      }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { cancelWire(); setWireModeActive(false); }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setDrawingWireStart]);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [cancelWire]);
 
-  const getCanvasCoords = (clientX: number, clientY: number) => {
+  // If wire mode gets disabled, cancel any in-progress wire
+  useEffect(() => {
+    if (!wireModeActive) cancelWire();
+  }, [wireModeActive, cancelWire]);
+
+  const toCanvas = (clientX: number, clientY: number) => {
     if (!canvasRef.current) return { x: 0, y: 0 };
     const rect = canvasRef.current.getBoundingClientRect();
-    const x = (clientX - rect.left - pan.x) / scale;
-    const y = (clientY - rect.top - pan.y) / scale;
-    return { x, y };
+    return {
+      x: (clientX - rect.left - pan.x) / zoom,
+      y: (clientY - rect.top  - pan.y) / zoom,
+    };
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePos(getCanvasCoords(e.clientX, e.clientY));
-  };
+  const handleMouseMove = (e: React.MouseEvent) =>
+    setMouseCanvas(toCanvas(e.clientX, e.clientY));
 
   const handleCanvasClick = (e: React.MouseEvent) => {
-    if (wireMode) {
-      const coords = getCanvasCoords(e.clientX, e.clientY);
-      if (drawingWireStart) {
-        addWire(drawingWireStart, coords);
-        setWireMode(false);
-      } else {
-        setDrawingWireStart(coords);
-      }
-    } else {
-      selectComponent(null);
-    }
+    if (!wireModeActive) { selectComponent(null); return; }
+    // Clicked empty canvas while wiring → cancel
+    cancelWire();
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    if (wireMode) return;
-    const newComponentType = e.dataTransfer.getData('componentType') as ComponentType;
-    const existingComponentId = e.dataTransfer.getData('existingComponentId');
+    if (wireModeActive) return;
+    const newType  = e.dataTransfer.getData('componentType') as ComponentType;
+    const existId  = e.dataTransfer.getData('existingComponentId');
 
-    if (newComponentType) {
-      addComponent(newComponentType, getCanvasCoords(e.clientX, e.clientY));
-    } else if (existingComponentId) {
-      const offsetX = parseFloat(e.dataTransfer.getData('offsetX') || '0');
-      const offsetY = parseFloat(e.dataTransfer.getData('offsetY') || '0');
-      const { x, y } = getCanvasCoords(
-        e.clientX - offsetX * scale,
-        e.clientY - offsetY * scale,
-      );
-      updateComponentPosition(existingComponentId, { x, y });
+    if (newType) {
+      addComponent(newType, toCanvas(e.clientX, e.clientY));
+    } else if (existId) {
+      const ox = parseFloat(e.dataTransfer.getData('offsetX') || '0');
+      const oy = parseFloat(e.dataTransfer.getData('offsetY') || '0');
+      const { x, y } = toCanvas(e.clientX - ox * zoom, e.clientY - oy * zoom);
+      updateComponentPosition(existId, { x, y });
     }
   };
 
@@ -85,18 +76,16 @@ export default function Canvas() {
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    if (e.ctrlKey) {
-      e.preventDefault();
-      const factor = 0.1;
-      setScale(s => e.deltaY > 0 ? Math.max(0.2, s - factor) : Math.min(3, s + factor));
-    }
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    setZoom(z => e.deltaY > 0 ? Math.max(0.2, z - 0.1) : Math.min(3, z + 0.1));
   };
 
   const isEmpty = components.length === 0;
 
   return (
     <div
-      className={`flex-1 bg-gray-950 overflow-hidden relative ${wireMode ? 'cursor-crosshair' : ''}`}
+      className={`flex-1 bg-gray-950 overflow-hidden relative ${wireModeActive ? 'cursor-crosshair' : ''}`}
       onClick={handleCanvasClick}
       onMouseMove={handleMouseMove}
       onDrop={handleDrop}
@@ -104,115 +93,133 @@ export default function Canvas() {
       onWheel={handleWheel}
       ref={canvasRef}
     >
-      {/* Dot-grid background */}
+      {/* Dot-grid */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(#374151 1px, transparent 1px)',
-          backgroundSize: `${24 * scale}px ${24 * scale}px`,
+          backgroundSize:  `${24 * zoom}px ${24 * zoom}px`,
           backgroundPosition: `${pan.x}px ${pan.y}px`,
           opacity: 0.35,
         }}
       />
 
-      {/* Empty-state hint */}
+      {/* Empty state */}
       {isEmpty && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none select-none z-10">
           <div className="text-4xl opacity-20">🔌</div>
-          <p className="text-gray-600 text-sm font-medium">
-            Drag components from the left panel onto the canvas
-          </p>
+          <p className="text-gray-600 text-sm">Drag components from the left panel onto the canvas</p>
         </div>
       )}
 
-      {/* Toolbar — wire mode + zoom */}
+      {/* Top-right toolbar */}
       <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-        {/* Wire toggle */}
+        {/* Wire mode toggle */}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setWireMode(m => !m);
-            setDrawingWireStart(null);
-          }}
-          title="Draw Wire (W)"
+          onClick={(e) => { e.stopPropagation(); setWireModeActive(m => !m); }}
+          title="Draw Wire between pins"
           className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg border transition-all ${
-            wireMode
+            wireModeActive
               ? 'bg-lime-600 text-white border-lime-500 shadow-[0_0_12px_rgba(132,204,22,0.4)]'
-              : 'bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:border-gray-600'
+              : 'bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700'
           }`}
         >
-          {wireMode ? <Pencil size={14} /> : <MousePointer2 size={14} />}
-          {wireMode ? 'Drawing Wire…' : 'Draw Wire'}
+          {wireModeActive ? <X size={14} /> : <Cable size={14} />}
+          {wireModeActive ? 'Exit Wire Mode' : 'Wire Mode'}
         </button>
 
-        {/* Zoom out */}
         <button
-          onClick={(e) => { e.stopPropagation(); setScale(s => Math.max(0.2, parseFloat((s - 0.1).toFixed(1)))); }}
-          className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-gray-300 transition-colors"
+          onClick={(e) => { e.stopPropagation(); setZoom(z => Math.max(0.2, +(z - 0.1).toFixed(1))); }}
+          className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-gray-300"
         >
           <ZoomOut size={14} />
         </button>
-
-        {/* Zoom label */}
-        <span className="text-xs text-gray-400 font-mono w-10 text-center">
-          {Math.round(scale * 100)}%
-        </span>
-
-        {/* Zoom in */}
+        <span className="text-xs text-gray-400 font-mono w-10 text-center">{Math.round(zoom * 100)}%</span>
         <button
-          onClick={(e) => { e.stopPropagation(); setScale(s => Math.min(3, parseFloat((s + 0.1).toFixed(1)))); }}
-          className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-gray-300 transition-colors"
+          onClick={(e) => { e.stopPropagation(); setZoom(z => Math.min(3, +(z + 0.1).toFixed(1))); }}
+          className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-gray-300"
         >
           <ZoomIn size={14} />
         </button>
       </div>
 
-      {/* Scalable canvas layer */}
+      {/* Scalable canvas world */}
       <div
-        className="absolute origin-top-left w-full h-full"
-        style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})` }}
+        className="absolute origin-top-left"
+        style={{ transform: `translate(${pan.x}px,${pan.y}px) scale(${zoom})`, width: '100%', height: '100%' }}
       >
         {/* Wires SVG */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
-          {wires.map(wire => (
-            <line
-              key={wire.id}
-              x1={wire.start.x} y1={wire.start.y}
-              x2={wire.end.x}   y2={wire.end.y}
-              stroke="#84cc16"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              style={{ filter: 'drop-shadow(0 0 3px #84cc16aa)' }}
-            />
+        <svg className="absolute inset-0 overflow-visible pointer-events-none" style={{ width: '100%', height: '100%' }}>
+          <defs>
+            {wires.map(w => (
+              <filter key={`glow-${w.id}`} id={`glow-${w.id}`} x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            ))}
+          </defs>
+
+          {/* Completed wires */}
+          {wires.map(w => (
+            <g key={w.id}>
+              {/* Shadow */}
+              <line
+                x1={w.from.x} y1={w.from.y} x2={w.to.x} y2={w.to.y}
+                stroke={w.color} strokeWidth={6} strokeLinecap="round" opacity={0.15}
+              />
+              {/* Main line */}
+              <line
+                x1={w.from.x} y1={w.from.y} x2={w.to.x} y2={w.to.y}
+                stroke={w.color} strokeWidth={2.5} strokeLinecap="round"
+                style={{ filter: `drop-shadow(0 0 3px ${w.color}88)` }}
+              />
+              {/* Endpoint dots */}
+              <circle cx={w.from.x} cy={w.from.y} r={4} fill={w.color} />
+              <circle cx={w.to.x}   cy={w.to.y}   r={4} fill={w.color} />
+            </g>
           ))}
-          {drawingWireStart && (
-            <line
-              x1={drawingWireStart.x} y1={drawingWireStart.y}
-              x2={mousePos.x}         y2={mousePos.y}
-              stroke="#84cc16"
-              strokeWidth={2.5}
-              strokeDasharray="6 4"
-              strokeLinecap="round"
-              opacity={0.7}
-            />
+
+          {/* Live wire preview */}
+          {wireModeActive && wireInProgress && (
+            <>
+              <line
+                x1={wireInProgress.x} y1={wireInProgress.y}
+                x2={mouseCanvas.x}    y2={mouseCanvas.y}
+                stroke="#84cc16" strokeWidth={2} strokeDasharray="6 4"
+                strokeLinecap="round" opacity={0.8}
+              />
+              <circle cx={wireInProgress.x} cy={wireInProgress.y} r={5} fill="#84cc16"
+                style={{ filter: 'drop-shadow(0 0 5px #84cc16)' }}
+              />
+            </>
           )}
         </svg>
 
         {/* Components */}
         {components.map(comp => (
-          <ComponentCard key={comp.id} component={comp} />
+          <ComponentCard
+            key={comp.id}
+            component={comp}
+            wireModeActive={wireModeActive}
+          />
         ))}
       </div>
 
-      {/* Bottom-left status bar */}
+      {/* Status bar */}
       <div className="absolute bottom-3 left-3 z-10 flex items-center gap-3 text-[11px] text-gray-500 bg-gray-900/80 backdrop-blur border border-gray-800 rounded-lg px-3 py-1.5">
-        <span className="font-mono">{Math.round(scale * 100)}%</span>
+        <span className="font-mono">{Math.round(zoom * 100)}%</span>
         <span className="text-gray-700">|</span>
-        <span>Ctrl + Scroll to zoom</span>
-        {wireMode && (
+        <span className="flex items-center gap-1">
+          <MousePointer2 size={10} /> Ctrl+Scroll to zoom
+        </span>
+        {wireModeActive && (
           <>
             <span className="text-gray-700">|</span>
-            <span className="text-lime-400 font-medium">Wire mode — click to place points, Esc to cancel</span>
+            <span className="text-lime-400 font-medium">
+              {wireInProgress
+                ? `From: ${wireInProgress.pinName} — click another pin to connect`
+                : 'Click a yellow pin dot to start a wire'}
+            </span>
           </>
         )}
       </div>

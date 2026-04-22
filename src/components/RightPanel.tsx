@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useCircuitStore } from '@/store/useCircuitStore';
-import { Trash2, Info } from 'lucide-react';
+import { Trash2, Info, Cable } from 'lucide-react';
 
 const PIN_INFO: Record<string, string[]> = {
   'wokwi-arduino-uno':         ['D0–D13 (Digital)', 'A0–A5 (Analog)', '5V, 3.3V, GND', 'AREF, RESET'],
@@ -30,9 +30,13 @@ const PIN_INFO: Record<string, string[]> = {
 };
 
 export default function RightPanel() {
-  const { components, selectedComponentId, removeComponent } = useCircuitStore();
+  const { components, wires, selectedComponentId, removeComponent } = useCircuitStore();
   const selected = components.find(c => c.id === selectedComponentId);
   const pins = selected ? (PIN_INFO[selected.type] ?? []) : [];
+
+  const connectedWires = selected
+    ? wires.filter(w => w.from.componentId === selected.id || w.to.componentId === selected.id)
+    : [];
 
   return (
     <aside className="w-72 bg-gray-900 border-l border-gray-800 flex flex-col shrink-0">
@@ -80,6 +84,43 @@ export default function RightPanel() {
                     {pin}
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Connections */}
+          {connectedWires.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1.5 text-gray-400">
+                <Cable size={13} />
+                <span className="text-xs font-semibold uppercase tracking-wider">
+                  Connections ({connectedWires.length})
+                </span>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {connectedWires.map(w => {
+                  const isFrom = w.from.componentId === selected.id;
+                  const myPin    = isFrom ? w.from.pinName : w.to.pinName;
+                  const otherId  = isFrom ? w.to.componentId   : w.from.componentId;
+                  const otherPin = isFrom ? w.to.pinName       : w.from.pinName;
+                  const otherComp = components.find(c => c.id === otherId);
+                  return (
+                    <div
+                      key={w.id}
+                      className="flex items-center gap-2 text-[11px] bg-gray-800/60 border border-gray-700/60 rounded-lg px-2 py-1.5 font-mono"
+                    >
+                      <span
+                        className="w-2 h-2 rounded-full flex-shrink-0"
+                        style={{ background: w.color, boxShadow: `0 0 4px ${w.color}` }}
+                      />
+                      <span className="text-amber-300">{myPin}</span>
+                      <span className="text-gray-600">→</span>
+                      <span className="text-gray-400 truncate">
+                        {otherComp?.name ?? otherId} · {otherPin}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
